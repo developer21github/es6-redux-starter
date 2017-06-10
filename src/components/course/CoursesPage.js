@@ -1,46 +1,55 @@
 import React,{PropTypes} from 'react';
+import {connect} from 'react-redux';
+import * as courseActions from '../../actions/courseActions';
+import {bindActionCreators} from 'redux';
+import CourseList from './CourseList';
+import {browserHistory} from 'react-router';
 
 class CoursesPage extends React.Component{
   constructor(props,contex){
     super(props,contex);
-
-    this.state={
-      course:{title:null}
-    };
-
-    this.onClickSave=this.onClickSave.bind(this);
-    this.onTitleChange=this.onTitleChange.bind(this);
-
+    this.redirectToAddCoursePage= this.redirectToAddCoursePage.bind(this);
   }
 
-  onTitleChange(event){
-    const course=this.state.course;
-    course.title=event.target.value;
-    this.setState({course:course});
+  courseRow(course, index){
+    return <div key={index}>{course.title}</div>;
   }
 
-  onClickSave(){
-    alert(`saveing ${this.state.course.title}`);
+  redirectToAddCoursePage(){
+    browserHistory.push('/course');
   }
 
   render(){
+    const {courses} = this.props;
+
     return(
-      <div>
+      <div className="jumbotron">
         <h1>Courses</h1>
-        <h2>Add Course</h2>
-        <input
-          type="text"
-          onChange={this.onTitleChange}
-          value={this.state.course.title} />
-
-        <input
-          type="submit"
-          onClick={this.onClickSave}
-          value="save" />
-
+        <input type="submit"
+               value="Add New Course"
+               className="btn btn-primary"
+               onClick={this.redirectToAddCoursePage}/>
+        <CourseList courses={courses} />
       </div>
     );
   }
 }
 
-export default CoursesPage;
+CoursesPage.propTypes={
+  courses: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
+};
+
+function mapStateToProps(state,ownProps) {
+  return{
+    courses: state.courses
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return{
+    actions: bindActionCreators(courseActions,dispatch)
+  };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CoursesPage);

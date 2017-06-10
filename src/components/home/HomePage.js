@@ -1,14 +1,13 @@
-import {React,Component} from 'react';
+import React from 'react';
 import {Link} from 'react-router';
-import App from '../App';
 
-class HomePage extends Component{
+class HomePage extends React.Component{
   render(){
     return(
       <div className="jumbotron">
-        <h1>Administration</h1>
+        <h2>Hello, Hardik</h2>
         <p>React, Redux and React Router in ES6 for REACTJS Web App.</p>
-        <link to="about" className="btn btn-primary btn-lg">Learn more</link>
+        <Link to="about" className="btn btn-primary btn-lg">Learn more</Link>
       </div>
     );
   }
